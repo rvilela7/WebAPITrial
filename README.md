@@ -1,5 +1,9 @@
 # WebAPITrial
-Following course from Udemy
+Following course from Linkedin
 
-https://babel.udemy.com/course/rest-apis-in-aspnet-core/
+https://www.linkedin.com/learning/building-web-apis-with-asp-dot-net-core-3
+
+
+
+
 
