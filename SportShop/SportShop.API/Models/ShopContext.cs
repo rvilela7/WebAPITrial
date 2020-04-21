@@ -21,7 +21,7 @@ namespace SportShop.API.Models
             modelBuilder.Entity<Order>().HasOne(o => o.User);
             modelBuilder.Entity<User>().HasMany(u => u.Orders).WithOne(o => o.User).HasForeignKey(o => o.UserId);
 
-            //modelBuilder.Seed();
+            modelBuilder.Seed();
         }
     }
 }
