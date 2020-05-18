@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using SportShop.API.Models;
 
 namespace SportShop.API.Controllers
@@ -23,12 +23,14 @@ namespace SportShop.API.Controllers
         }
 
         [HttpGet("/1")]
-        public IEnumerable<Product> GetAllProducts1() { 
+        public IEnumerable<Product> GetAllProducts1()
+        {
             return _ctx.Products.ToArray();
         }
 
         [HttpGet("/2")]
-        public IActionResult GetAllProducts2() { 
+        public IActionResult GetAllProducts2()
+        {
             return Ok(_ctx.Products.ToArray());
         }
 
@@ -58,5 +60,16 @@ namespace SportShop.API.Controllers
             return Ok(product);
         }
 
+        [HttpGet("/Paged")]
+        public async Task<IActionResult> GetProductListPaged([FromQuery] PagingParameters pagingParameters)
+        {
+            IQueryable<Product> products = _ctx.Products;
+
+            products = products
+            .Skip(pagingParameters.Size * (pagingParameters.Page - 1))
+            .Take(pagingParameters.Size);
+
+            return Ok(await products.ToArrayAsync());
+        }
     }
 }
