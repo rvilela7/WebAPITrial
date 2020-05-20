@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SportShop.API.Models;
@@ -70,6 +69,37 @@ namespace SportShop.API.Controllers
             .Take(pagingParameters.Size);
 
             return Ok(await products.ToArrayAsync());
+        }
+
+        [HttpPost("/PostProduct")]
+        public async Task<IActionResult> PostProduct([FromBody] Product product)
+        {
+            _ctx.Products.Add(product);
+            await _ctx.SaveChangesAsync();
+            return CreatedAtAction( //Important!
+                "GetProduct",
+                new { id = product.Id },
+                product);
+
+        }
+
+        //PUT Missing
+        //Pass ID, product
+        //Return NoContent
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<Product>> DeleteProduct(int id) //Type change
+        {
+            var product = await _ctx.Products.FindAsync(id);
+
+            if (product == null)
+                return NotFound();
+
+            _ctx.Products.Remove(product);
+            await _ctx.SaveChangesAsync(); 
+
+            return product; //Notice type of method
+            //return NoContent(); //IAction Result
         }
     }
 }
